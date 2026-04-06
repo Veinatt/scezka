@@ -1,36 +1,45 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Scežka
 
-## Getting Started
+Social travel network for Belarus. Users can mark points on a map, create routes, leave reviews, and share their journeys.
 
-First, run the development server:
+## Tech Stack
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- Next.js 15 (App Router)
+- TypeScript (strict)
+- Tailwind CSS + shadcn/ui
+- Supabase (PostgreSQL + PostGIS)
+- Yandex Maps API
+- Zustand + TanStack Query
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Development Plan (5 stages)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Stage 1: Fundamentals (Days 1-3)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- Project setup, Supabase, auth, basic UI
 
-## Learn More
+### Stage 2: Maps & Points (Days 4-6)
 
-To learn more about Next.js, take a look at the following resources:
+- Yandex Maps integration, add points, display markers
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Stage 3: Social Features (Days 7-10)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Feed, profiles, comments, likes
 
-## Deploy on Vercel
+### Stage 4: Killer Feature – Route Builder (Days 11-14)
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Create routes, filter by region/duration, algorithm for optimal path
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+### Stage 5: Polish & Deploy (Days 15-17)
+
+- Responsive design, SEO, Vercel deployment
+
+## Setup Instructions
+
+1. Clone the repository
+2. Copy `.env.local.example` to `.env.local` and fill in Supabase credentials
+3. Run `npm install`
+4. Run `npm run dev`
+
+## Progress Log
+
+This README will be updated after each development day with actual progress, decisions, and next steps.

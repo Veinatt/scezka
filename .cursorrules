@@ -1,0 +1,95 @@
+# Scežka - Cursor Rules
+
+## Project Overview
+- Next.js 15 with App Router
+- TypeScript (strict mode)
+- Tailwind CSS + shadcn/ui
+- Supabase (PostgreSQL + PostGIS)
+- Yandex Maps API via @pbe/react-yandex-maps
+- Zustand for client state
+- TanStack Query for server state
+
+## General Principles
+- Prefer server components unless client interaction is needed (use 'use client' explicitly)
+- Use TypeScript strict mode – no `any` type without a strong reason
+- Keep components small and focused (single responsibility)
+- Use functional components with named exports
+- Add JSDoc comments for complex logic, hooks, and utilities
+
+## Code Style
+- 2 spaces indentation
+- Single quotes for strings
+- Semicolons required
+- Trailing commas in multi-line objects/arrays
+- Max line length: 100 characters
+
+## Naming Conventions
+- Components: PascalCase (e.g., `PostModal.tsx`)
+- Hooks: camelCase with 'use' prefix (e.g., `usePosts.ts`)
+- Utils/helpers: camelCase (e.g., `formatDate.ts`)
+- Types/Interfaces: PascalCase, suffix 'Type' for types, no suffix for interfaces (e.g., `PostType` vs `Post`)
+- Constants: UPPER_SNAKE_CASE
+
+## Folder Structure (src/)
+src/
+├── app/ # App Router pages and layouts
+├── components/ # Reusable UI components
+│ ├── ui/ # shadcn/ui components (auto-generated)
+│ ├── Auth/ # auth-related components
+│ ├── Map/ # map components
+│ └── Post/ # post/comment components
+├── hooks/ # custom React hooks
+├── lib/ # utilities, clients (supabase, etc.)
+├── store/ # Zustand stores
+└── types/ # shared TypeScript types (if not in database.types.ts)
+
+## Supabase Best Practices
+- Always use RLS policies – never disable them
+- Use `@supabase/ssr` for server/client clients
+- Prefer server-side data fetching where possible (server components)
+- For real-time features, use `supabase.channel()` only in client components
+- Use PostGIS functions (`ST_DWithin`, `ST_MakePoint`, etc.) for geo queries
+- Never store plain text passwords; Supabase Auth handles it
+
+## Yandex Maps Integration
+- Use dynamic import with `{ ssr: false }` for any map component
+- Load map only on client side
+- Use `@pbe/react-yandex-maps` wrapper
+- Coordinates: [latitude, longitude] order in JS, but `POINT(lng lat)` in PostGIS
+
+## State Management
+- Zustand: only for client-global UI state (theme, user session, filters)
+- TanStack Query: for all server-state (posts, comments, routes)
+- Local component state: useState/useReducer
+
+## Error Handling
+- Use try/catch with specific error messages
+- Show user-friendly toasts for errors (using shadcn/ui toast)
+- Log errors to console in development only
+- Always handle loading and error states in components
+
+## Git & Commits
+- Use Conventional Commits: feat:, fix:, docs:, style:, refactor:, test:, chore:
+- Keep commits atomic (one logical change per commit)
+- Run `npm run lint` and `npm run format` before committing
+
+## Security
+- Never expose Supabase anon key or URL in client-side code (use env variables)
+- Validate all user inputs on server side (even if validated on client)
+- Use RLS policies as primary security layer
+
+## Performance
+- Use Next.js Image component for images
+- Lazy load components with `next/dynamic` when not needed immediately
+- Use React.memo for expensive components
+- Implement pagination for lists (posts, comments)
+
+## AI Assistant Instructions
+When I ask you to generate code:
+1. Follow the above conventions strictly.
+2. Provide TypeScript types for all functions/components.
+3. Include error handling and loading states where appropriate.
+4. Add brief comments explaining non-obvious logic.
+5. If you suggest a query to Supabase, ensure it's efficient (use select only needed columns).
+6. For map-related code, always remember to use dynamic import and client component.
+7. Prefer server components unless you need hooks or browser APIs.
