@@ -2,9 +2,7 @@ import { createClient } from '@/lib/supabase/server';
 
 export default async function Home() {
   const supabase = await createClient();
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const user = supabase ? (await supabase.auth.getUser()).data.user : null;
 
   return (
     <main className="flex min-h-screen flex-col items-center justify-center p-24">
@@ -13,7 +11,11 @@ export default async function Home() {
         Social travel map for Belarus – mark your routes, share points, and discover new paths.
       </p>
       <p className="mt-2 text-muted-foreground">
-        {user ? `Welcome back, ${user.email}!` : 'Please sign in to start adding points.'}
+        {user
+          ? `Welcome back, ${user.email}!`
+          : supabase
+            ? 'Please sign in to start adding points.'
+            : 'Configure NEXT_PUBLIC_SUPABASE_URL and NEXT_PUBLIC_SUPABASE_ANON_KEY in .env.local to enable auth.'}
       </p>
       <div className="mt-8 h-96 w-full max-w-4xl bg-gray-200 rounded-lg flex items-center justify-center">
         🗺️ Yandex Maps will be displayed here
