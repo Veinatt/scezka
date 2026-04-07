@@ -3,7 +3,12 @@ import { NextResponse, type NextRequest } from 'next/server';
 
 import { getSupabaseEnv } from '@/lib/supabase/env';
 
+/** Routes that require an authenticated session. */
+const PROTECTED_PREFIXES = ['/dashboard'];
+
 export async function middleware(request: NextRequest) {
+  const { pathname } = request.nextUrl;
+
   const response = NextResponse.next({
     request: {
       headers: request.headers,
@@ -30,9 +35,20 @@ export async function middleware(request: NextRequest) {
       },
     });
 
-    await supabase.auth.getUser();
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    const isProtected = PROTECTED_PREFIXES.some((prefix) => pathname.startsWith(prefix));
+
+    if (isProtected && !user) {
+      const loginUrl = request.nextUrl.clone();
+      loginUrl.pathname = '/login';
+      loginUrl.searchParams.set('next', pathname);
+      return NextResponse.redirect(loginUrl);
+    }
   } catch {
-    // Invalid env at runtime, network, or session edge cases — never fail the request.
+    // Never fail a request due to auth errors.
   }
 
   return response;
