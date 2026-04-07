@@ -32,7 +32,7 @@ export default function RegisterPage() {
     <Card className="w-full max-w-sm">
       <CardHeader className="text-center">
         <CardTitle className="text-2xl">Create account</CardTitle>
-        <CardDescription>Join Scežka and start sharing your journey</CardDescription>
+        <CardDescription>Join ścieżka and start sharing your journey</CardDescription>
       </CardHeader>
       <CardContent>
         <AuthForm

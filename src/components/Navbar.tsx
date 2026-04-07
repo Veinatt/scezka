@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { createClient } from '@/lib/supabase/server';
 import { signOut } from '@/app/(auth)/actions';
 import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/ThemeToggle';
 
 /**
  * Top navigation bar. Rendered as a server component so it can read the
@@ -14,11 +15,12 @@ export async function Navbar() {
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-background/80 backdrop-blur-sm">
       <div className="container mx-auto flex h-14 max-w-5xl items-center justify-between px-4">
-        <Link href="/" className="text-lg font-bold tracking-tight">
-          Scežka
+        <Link href="/" className="text-lg font-bold tracking-tight text-primary">
+        ściežka
         </Link>
 
-        <nav className="flex items-center gap-3">
+        <nav className="flex items-center gap-2">
+          <ThemeToggle />
           {user ? (
             <>
               <Link

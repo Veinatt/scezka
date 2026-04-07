@@ -1,6 +1,40 @@
-# Scežka
+# ścieżka
 
 Social travel network for Belarus. Users can mark points on a map, create routes, leave reviews, and share their journeys.
+
+## 📅 What was done today (2026-04-07)
+
+### Rebranding: Scežka → ścieżka
+- Renamed all user-facing text, metadata titles, and `.cursorrules` heading from "Scežka" to "ścieżka"
+- Updated login page ("Sign in to your ścieżka account") and register page ("Join ścieżka and start sharing your journey")
+- Updated `<title>` in root layout and auth layout
+
+### Font
+- Replaced Geist Sans / Geist Mono with **Inter** from `next/font/google`
+- Applied as `--font-inter` CSS variable; wired into Tailwind via `--font-sans` and `--font-heading`
+
+### Color palette & theming
+- Replaced default shadcn/ui `oklch` neutral palette with a resort-inspired earthy-green scheme (light + dark)
+- Light mode: warm cream background, forest-green primary, muted olive accents
+- Dark mode: deep green surfaces, low-contrast neutral text, matching sidebar tokens
+
+### Dark mode
+- Added `next-themes` dependency
+- Created `ThemeProvider` client component wrapping `NextThemesProvider`
+- Wrapped app in `ThemeProvider` inside `Providers` (default: system preference)
+- Created `ThemeToggle` button (Sun/Moon icons) with `mounted` guard to prevent hydration mismatch
+- Added `ThemeToggle` to `Navbar`; added `suppressHydrationWarning` to `<html>`
+
+### Stage 2: Maps & Points (completed)
+- Replaced homepage map placeholder with a live interactive Yandex map (`BelarusMap`)
+- `HomeMap` client wrapper uses `next/dynamic` with `ssr: false` to avoid SSR restriction
+- `usePoints` TanStack Query hook — fetches markers from Supabase, parses PostGIS geography (GeoJSON + WKT)
+- `useCreatePoint` mutation — inserts point via `SRID=4326;POINT(lng lat)`, invalidates cache on success
+- `AddPointDialog` — opens on map click, collects title / description / region, validates input
+- Markers rendered as `Placemark` with hint + balloon content from Supabase data
+- Auth gate: signed-out users can browse markers; adding points shows a sign-in prompt
+- `NEXT_PUBLIC_YANDEX_MAPS_API_KEY` wired through `YMaps query` prop; missing-key warning badge shown in UI
+- Added Yandex Maps API key entry to `.env.local.example` with setup instructions
 
 ## Tech Stack
 - Next.js 15 (App Router)
@@ -33,6 +67,12 @@ Social travel network for Belarus. Users can mark points on a map, create routes
 3. Run `npm install`
 4. Run `npm run dev`
 
+### Optional map key
+For full Yandex Maps functionality, set this in `.env.local`:
+```
+NEXT_PUBLIC_YANDEX_MAPS_API_KEY=your_yandex_maps_api_key
+```
+
 ## For Google OAuth
 Enable the Google provider in Supabase Dashboard → Authentication → Providers, then add your Google Client ID and Secret. The authorized redirect URI to register in Google Cloud Console is:
 ```
@@ -64,8 +104,18 @@ https://<your-project-ref>.supabase.co/auth/v1/callback
 - Dashboard page (`/dashboard`) shows user profile and placeholder stats
 - Middleware redirects unauthenticated users from `/dashboard` to `/login`
 
-### Next: Day 3 – Stage 2 begins
-- Yandex Maps dynamic import (client component)
-- Display map centered on Belarus
-- Add point modal (click map → fill form → save to Supabase PostGIS)
-- Display saved points as markers
+### Day 3 – Stage 2 kickoff (Maps MVP)
+- Replaced homepage placeholder with a client-only Yandex map (`next/dynamic` with `ssr: false`)
+- Added TanStack Query hooks for points:
+  - `usePoints()` to load markers
+  - `useCreatePoint()` to insert new points and invalidate cache
+- Added map click flow:
+  - Click map to select coordinates
+  - Open add-point dialog (title, description, region)
+  - Save point and refresh markers
+- Marker rendering:
+  - Shows existing points from Supabase on the map
+  - Uses title as hint and description in balloon
+- Auth UX:
+  - Signed-out users can view markers
+  - Adding points is gated with a clear sign-in prompt

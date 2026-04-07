@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: 'Scežka – Sign in',
+  title: 'ścieżka – Sign in',
 };
 
 export default function AuthLayout({ children }: { children: React.ReactNode }) {
