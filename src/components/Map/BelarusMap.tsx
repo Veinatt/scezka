@@ -77,7 +77,7 @@ export function BelarusMap({ userId }: BelarusMapProps) {
             {points.map((point) => (
               <Placemark
                 key={point.id}
-                geometry={[point.latitude, point.longitude]}
+                geometry={[point.lat, point.lng]}
                 modules={['geoObject.addon.balloon', 'geoObject.addon.hint']}
                 properties={{
                   hintContent: point.title,

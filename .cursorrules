@@ -1,3 +1,13 @@
+# LANGUAGE RULE (MUST BE FIRST)
+You are an AI assistant. Your internal reasoning, chain-of-thought, and any thinking process must be in English.
+However, your final response to the user, including all explanations, step-by-step descriptions, code comments, error
+messages, and any output text, must be written in Russian. Never output English in the final answer except for:
+- Code keywords (if, else, function, etc.)
+- Variable names, function names, class names
+- Syntax that must remain in English
+- Strings that are explicitly meant to be in English (e.g., API responses)
+The user sees only the Russian output. If you accidentally start writing in English, stop and rewrite in Russian.
+
 # ścieżka - Cursor Rules
 
 ## Project Overview
